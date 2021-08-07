@@ -11,6 +11,7 @@ import {
   Container,
   Row,
   Col,
+  Modal,
 } from "react-bootstrap";
 
 function TableList() {
@@ -35,9 +36,14 @@ function TableList() {
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
                 <Card.Title as="h4" style={{display: "inline-block"}}>All Products</Card.Title>
-                <Button variant="success"  style={{float: "right"}} onClick={()=>console.log("qwerty")}>
+                {/* <Button variant="success"  style={{float: "right"}} onClick={ ()=> history.push("/create") }>
                   Create
-                </Button>
+                </Button> */}
+                <Link to={"/admin/products/create/"}>
+                  <Button variant="success" style={{float: "right"}} >
+                    Create
+                  </Button>
+                </Link>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
                 <Table className="table-hover table-striped">
@@ -86,6 +92,7 @@ function TableList() {
             </Card>
           </Col>
         </Row>
+
       </Container>
     </>
   );

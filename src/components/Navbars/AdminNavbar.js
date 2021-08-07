@@ -22,7 +22,7 @@ import Auth from '../../auth'
 
 import routes from "routes.js";
 
-function Header() {
+function Header() {routes
   const location = useLocation();
   const mobileSidebarToggle = (e) => {
     e.preventDefault();

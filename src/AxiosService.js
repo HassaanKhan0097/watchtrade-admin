@@ -7,7 +7,8 @@ export default axios.create({
     // baseURL: 'http://localhost:5000',
     // timeout: 1000,
     headers: {
-        'Content-Type'  : 'application/x-www-form-urlencoded',
+        // 'Content-Type'  : 'application/x-www-form-urlencoded',
+        'Content-Type'  : 'application/JSON',
         'Authorization' : 'Bearer '+localStorage.getItem("accessToken")
     }
 });

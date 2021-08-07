@@ -20,6 +20,7 @@ import ViewAllProducts  from "views/ViewAllProducts";
 import ViewAllOrders    from "views/ViewAllOrders";
 import ViewAllUsers     from "views/ViewAllUsers";
 import ProductManage     from "views/ProductManage";
+import ProductCreate     from "views/ProductCreate";
 import ViewAllRequests   from "views/ViewAllRequests"
 
 // import UserProfile from "views/UserProfile.js";
@@ -44,6 +45,14 @@ const dashboardRoutes = [
     name: "Products",
     icon: "nc-icon nc-watch-time",
     component: ProductManage,
+    layout: "/admin",
+    type: "innerPage",
+  },
+  {
+    path: "/products/create/",
+    name: "Products",
+    icon: "nc-icon nc-watch-time",
+    component: ProductCreate,
     layout: "/admin",
     type: "innerPage",
   },
