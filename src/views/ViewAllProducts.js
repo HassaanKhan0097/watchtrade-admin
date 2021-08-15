@@ -35,10 +35,10 @@ function TableList() {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                <Card.Title as="h4" style={{display: "inline-block"}}>All Products</Card.Title>
-                {/* <Button variant="success"  style={{float: "right"}} onClick={ ()=> history.push("/create") }>
-                  Create
-                </Button> */}
+                <Card.Title as="h4" style={{display: "inline-block"}}> Products</Card.Title>
+                  {/* <p className="card-category">
+                    List of all products:
+                  </p> */}
                 <Link to={"/admin/products/create/"}>
                   <Button variant="success" style={{float: "right"}} >
                     Create

@@ -17,7 +17,10 @@ import {
   Table,
 } from "react-bootstrap";
 var qs = require('qs');
+
 function ProductManage(props) {
+
+
   const [product, setProduct] = useState({
     "userId": "", 
     "name": "", 
@@ -29,10 +32,14 @@ function ProductManage(props) {
     "status": "pending",
     "description": ""
   });
+
+  const [updateProductError, setUpdateProductError] = useState(false);
+
+
   useEffect(() => {    
     Axios.get('/products/?_id='+props.match.params.id)
         .then(async response => {
-          console.log(response.data)
+          console.log("Product -->", response.data)
           setProduct(response.data[0])
         })
         .catch(error => {
@@ -40,24 +47,29 @@ function ProductManage(props) {
             // console.error('There was an error!', error);
         });
   }, []);
+
   const setProductState = (key, value)=>{
     let _product = Object.assign({}, product)
     _product[key] = value  
     return _product
   }
+
   const formSubmission = (e)=>{
     // e.preventDefault()
     console.log(product)
-    Axios.post('/products/update', {data: qs.stringify(product)})
+    Axios.post('/products/update/'+props.match.params.id, product)
     .then(async response => {
-      console.log(response.data)
+      // console.log(response.data)
       // setProduct(response.data[0])
+      props.history.push("/admin/products/")
     })
     .catch(error => {
         // this.setState({ errorMessage: error.toString() });
         // console.error('There was an error!', error);
+        setUpdateProductError(true);
     });
-  }
+  } 
+
   return (
     <>
       <Container fluid>
@@ -70,18 +82,18 @@ function ProductManage(props) {
               <Card.Body>
                 <Form>
                   <Row>
-                    <Col className="pr-1" md="12">
+                    <Col className="pr-3" md="12">
                       <Form.Group>
                         <label>Product Owner</label>
                         <Form.Control
-                          value={product.userId}
+                          value={product.userId.userName}
                           disabled
                           placeholder="Product Owner"
                           type="text"
                         ></Form.Control>
                       </Form.Group>
                     </Col>
-                    <Col className="pl-1" md="4">
+                    <Col className="pr-3 pl-3" md="4">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1"> Name </label>
                         <Form.Control placeholder="Name" value={product.name} type="text"
@@ -89,7 +101,7 @@ function ProductManage(props) {
                         ></Form.Control>
                       </Form.Group>
                     </Col>
-                    <Col className="pl-1" md="4">
+                    <Col className="pr-3 pl-3" md="4">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1"> Brand </label>
                         <Form.Control placeholder="Brand" value={product.brand} type="text"
@@ -97,7 +109,7 @@ function ProductManage(props) {
                         ></Form.Control>
                       </Form.Group>
                     </Col>
-                    <Col className="pl-1" md="4">
+                    <Col className="pr-3 pl-3" md="4">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1"> Model Number </label>
                         <Form.Control placeholder="Model Number" value={product.modelNo} type="text"
@@ -105,7 +117,7 @@ function ProductManage(props) {
                         ></Form.Control>
                       </Form.Group>
                     </Col>
-                    <Col className="pl-1" md="4">
+                    <Col className="pr-3 pl-3" md="4">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1"> Auction Expire at </label>
                         <DateTimePicker
@@ -114,25 +126,25 @@ function ProductManage(props) {
                         />
                       </Form.Group>
                     </Col>
-                    <Col className="pl-1" md="4">
+                    <Col className="pr-3 pl-3" md="4">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1"> Starting Amount($) </label>
-                        <Form.Control placeholder="Model Number" value={product.startingPrice} type="number"
+                        <Form.Control disabled={product.bidHistory.length > 0 ? true : false} placeholder="Model Number" value={product.startingPrice} type="number"
                           onChange={(e)=>setProduct(setProductState("startingPrice",e.target.value))}
                         ></Form.Control>
                       </Form.Group>
                     </Col>
-                    <Col className="pl-1" md="4">
+                    <Col className="pr-3 pl-3" md="4">
                       <Form.Group controlId="exampleForm.SelectCustom">
                         <Form.Label>Status</Form.Label>
                         <Form.Control as="select" custom 
                           value={product.status} 
                           onChange={(e)=>setProduct(setProductState("status",e.target.value))}>
                           <option value="pending">pending</option>
+                          <option value="deactivated">deactivated</option>
                           <option value="live">live</option>
                           <option value="finished">finished</option>
-                          <option value="deactivate">deactivate</option>
-                          <option value="rejected">rejected</option>
+                          <option value="sold">sold</option>
                         </Form.Control>
                       </Form.Group>
                     </Col>
@@ -169,8 +181,13 @@ function ProductManage(props) {
                     variant="info"
                     onClick={()=>formSubmission()}
                   >
-                    Update Profile
+                    Update Product
                   </Button>
+
+                  { updateProductError ? <div className="alert alert-danger mt-15" role="alert">
+                    <i className="fa fa-exclamation-circle"></i> Product Updation Failed! 
+                  </div> : null }
+
                   <div className="clearfix"></div>
                 </Form>
               </Card.Body>
@@ -197,7 +214,7 @@ function ProductManage(props) {
                   {product.bidHistory.map((bid, index) =>(
                     <tr key={"bid"+index}>
                       <td>{index+1}</td>
-                      <td>{bid.userId}</td>
+                      <td>{bid.userId.userName}</td>
                       <td>
                         <Moment format="MM/DD/YYYY hh:mm:ss">{bid.bidTime}</Moment>
                       </td>
