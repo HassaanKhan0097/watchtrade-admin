@@ -121,7 +121,7 @@ function ProductManage(props) {
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1"> Auction Expire at </label>
                         <DateTimePicker
-                          onChange={(e)=>setProduct(setProductState("auctionExpireAt",e.target.value))}
+                          onChange={(e)=>setProduct(setProductState("auctionExpireAt",e))}
                           value={ new Date(product.auctionExpireAt) }
                         />
                       </Form.Group>
